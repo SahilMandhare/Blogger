@@ -2,8 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Home from "../pages/Home";
 import About from "../pages/About";
+import { useSelector } from "react-redux";
 
 const Header = () => {
+  const currentUser = useSelector((state) => state.userData.currentUser);
+
   return (
     <>
       <div className="py-4 px-8 flex items-center justify-between bg-orange-600 shadow-xl">
@@ -17,9 +20,15 @@ const Header = () => {
           <Link to="/about">
             <p className="max-md:hidden">About</p>
           </Link>
-          <Link to="/signin">
-            <p>Sign In</p>
-          </Link>
+          {!currentUser ? (
+            <Link to="/signin">
+              <p>Sign In</p>
+            </Link>
+          ) : (
+            <Link to="/profile">
+              <img src={currentUser.avatar} className="h-6 w-6 rounded-full object-cover"/>
+            </Link>
+          )}
         </div>
       </div>
     </>
