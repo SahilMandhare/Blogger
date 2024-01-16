@@ -48,7 +48,7 @@ const SignUp = () => {
   return (
     <>
       <div className="m-12">
-        <h1 className="text-3xl font-semibold text-center">SignUp</h1>
+        <h1 className="text-3xl font-semibold text-center uppercase">Sign Up</h1>
         <form
           onSubmit={submitHandler}
           className="my-12 mx-auto flex flex-col gap-4 md:w-[600px]"
@@ -74,7 +74,7 @@ const SignUp = () => {
             placeholder="Password"
             onChange={inputHandler}
           />
-          <button className="p-4 bg-orange-700 rounded-lg">SignUp</button>
+          <button className="p-4 bg-orange-700 rounded-lg uppercase">Sign Up</button>
           <p className="flex gap-2">
             You Have Account ?
             <Link to="/signin">
