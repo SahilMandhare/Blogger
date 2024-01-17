@@ -10,7 +10,11 @@ export const userUpdate = async (req, res, next) => {
 
   const _id = req.params.id;
 
-  const newHashPassword = bcryptjs.hashSync(req.body.password, 12);
+  let newHashPassword = undefined;
+
+  if (req.body.password) {
+    newHashPassword = bcryptjs.hashSync(req.body.password, 12);
+  }
 
   const updateUser = await User.findByIdAndUpdate(
     { _id },

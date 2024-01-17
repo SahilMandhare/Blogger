@@ -26,7 +26,7 @@ const Header = () => {
             </Link>
           ) : (
             <Link to="/profile">
-              <img src={currentUser.avatar} className="h-6 w-6 rounded-full object-cover"/>
+              <img src={currentUser.avatar} className="h-8 w-8 rounded-full object-cover"/>
             </Link>
           )}
         </div>

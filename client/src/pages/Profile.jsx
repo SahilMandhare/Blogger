@@ -21,6 +21,8 @@ const Profile = () => {
     try {
       e.preventDefault();
 
+      if (!user) return
+
       const response = await fetch("/api/user/update/" + currentUser._id, {
         method: "POST",
         headers: {
@@ -30,6 +32,8 @@ const Profile = () => {
       });
 
       const data = await response.json();
+
+      console.log(data)
 
       if (data.success === false) {
         dispatch(errorData(data.message));
@@ -91,6 +95,16 @@ const Profile = () => {
           onSubmit={submitHandler}
           className="my-12 mx-auto flex flex-col gap-4 md:w-[600px]"
         >
+
+          <img className="h-36 w-36 rounded-full mx-auto object-cover" src={currentUser.avatar} alt="Profile" />
+          <input
+            id="avatar"
+            className="p-4 rounded-lg"
+            type="text"
+            placeholder="Avatar"
+            onChange={inputHandler}
+            defaultValue={currentUser.avatar}
+          />
           <input
             id="username"
             className="p-4 rounded-lg"

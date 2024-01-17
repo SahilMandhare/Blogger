@@ -61,6 +61,7 @@ const SignIn = () => {
             type="email"
             placeholder="Email"
             onChange={inputHandler}
+            required
           />
           <input
             id="password"
@@ -68,6 +69,7 @@ const SignIn = () => {
             type="password"
             placeholder="Password"
             onChange={inputHandler}
+            required
           />
           <button className="p-4 bg-orange-700 rounded-lg uppercase">Sign In</button>
           <p className="flex gap-2">
