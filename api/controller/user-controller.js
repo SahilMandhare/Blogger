@@ -27,7 +27,24 @@ export const userUpdate = async (req, res, next) => {
     { new: true }
   );
 
-  res.status(200).json(updateUser);
+  const { password: pass, ...remain } = updateUser._doc;
+
+  res.status(200).json(remain);
+};
+
+export const user = async (req, res, next) => {
+  if (req.params.id !== req.user.id) {
+    next(errorHandler(401, "UnAuthorized"));
+    return;
+  }
+
+  const _id = req.params.id;
+
+  const userData = await User.findById({_id});
+
+  const { password: pass, ...remain } = userData._doc;
+
+  res.status(200).json(remain);
 };
 
 export const userSignOut = async (req, res, next) => {

@@ -23,7 +23,7 @@ const Profile = () => {
 
       if (!user) return
 
-      const response = await fetch("/api/user/update/" + currentUser._id, {
+      const response = await fetch("/api/users/user/update/" + currentUser._id, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -53,7 +53,7 @@ const Profile = () => {
     try {
       e.preventDefault();
 
-      const response = await fetch("/api/user/signOut/" + currentUser._id, {
+      const response = await fetch("/api/users/user/signOut/" + currentUser._id, {
         method: "POST"
       });
 
@@ -72,7 +72,7 @@ const Profile = () => {
     try {
       e.preventDefault();
 
-      const response = await fetch("/api/user/delete/" + currentUser._id, {
+      const response = await fetch("/api/users/user/delete/" + currentUser._id, {
         method: "DELETE"
       });
 

@@ -8,6 +8,8 @@ import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
 import PrivateRoute from "./components/PrivateRoute";
 import CreateBlog from "./pages/CreateBlog";
+import Blog from "./pages/Blog";
+import UpdateBlog from "./pages/UpdateBlog";
 
 function App() {
   return (
@@ -22,7 +24,13 @@ function App() {
           <Route path="/profile" element={<Profile />} />
         </Route>
         <Route element={<PrivateRoute />}>
-          <Route path="/create-blog" element={<CreateBlog />} />
+          <Route path="/create-blog" element={<CreateBlog />} />  
+        </Route>
+        <Route element={<PrivateRoute />}>
+          <Route path="/update-blog/:id" element={<UpdateBlog />} />  
+        </Route>
+        <Route element={<PrivateRoute />}>
+          <Route path="/blog/:id" element={<Blog />} />  
         </Route>
       </Routes>
     </BrowserRouter>

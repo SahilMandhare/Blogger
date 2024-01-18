@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { errorData, successData } from "../redux/user/userData";
+import React, { useEffect, useState } from "react";
+import { errorData } from "../redux/user/userData";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const CreateBlog = () => {
+const UpdateBlog = () => {
   const [blog, setBlog] = useState(null);
 
   const error = useSelector((state) => state.userData.error);
@@ -13,9 +13,26 @@ const CreateBlog = () => {
 
   const navigate = useNavigate()
 
+  const params = useParams()
+
   const inputHandler = (e) => {
     setBlog({ ...blog, [e.target.id]: e.target.value });
   };
+
+  useEffect(() => {
+    const blogData = async () => {
+      try {
+        const response = await fetch("/api/blogs/blog/" + params.id);
+        const data = await response.json();
+
+        setBlog(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    blogData();
+  }, []);
 
   const submitHandler = async (e) => {
     try {
@@ -23,7 +40,7 @@ const CreateBlog = () => {
 
       if (!blog) return;
 
-      const response = await fetch("/api/blogs/blog/create/" + currentUser._id, {
+      const response = await fetch("/api/blogs/blog/update/" + params.id, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,11 +62,11 @@ const CreateBlog = () => {
     }
   };
 
-  return (
+  return blog && (
     <>
       <div className="m-12">
         <h1 className="text-3xl font-semibold text-center uppercase">
-          Create a Blog
+          Update a Blog
         </h1>
         <form
           onSubmit={submitHandler}
@@ -61,6 +78,7 @@ const CreateBlog = () => {
             type="text"
             placeholder="Image"
             onChange={inputHandler}
+            defaultValue={blog.image}
             required
           />
           <input
@@ -69,6 +87,7 @@ const CreateBlog = () => {
             type="text"
             placeholder="Title"
             onChange={inputHandler}
+            defaultValue={blog.title}
             required
           />
           <select
@@ -77,6 +96,7 @@ const CreateBlog = () => {
             type="text"
             placeholder="Type"
             onChange={inputHandler}
+            defaultValue={blog.type}
             required
           >
             <option value="">Select an Option</option>
@@ -91,10 +111,11 @@ const CreateBlog = () => {
             className="p-4 rounded-lg h-48"
             placeholder="Description"
             onChange={inputHandler}
+            defaultValue={blog.description}
             required
           />
           <button className="p-4 bg-orange-700 rounded-lg uppercase">
-            Create Blog
+            Update Blog
           </button>
           {error && <p className="text-red-600">{error}</p>}
         </form>
@@ -103,4 +124,4 @@ const CreateBlog = () => {
   );
 };
 
-export default CreateBlog;
+export default UpdateBlog;
