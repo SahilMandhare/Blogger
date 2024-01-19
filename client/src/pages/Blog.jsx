@@ -12,7 +12,7 @@ const Blog = () => {
       try {
         const response = await fetch("/api/blogs/blog/" + params.id);
         const data = await response.json();
-
+        
         setBlog(data);
       } catch (error) {
         console.log(error);

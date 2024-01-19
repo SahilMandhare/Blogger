@@ -29,6 +29,19 @@ export const blog = async (req, res, next) => {
   res.status(200).json(blogData);
 };
 
+export const userBlog = async (req, res, next) => {
+  const userRef = req.params.id;
+
+  const blogData = await Blog.find({ userRef });
+
+  if (!blogData) {
+    next(errorHandler(401, "Blog Not Found"));
+    return;
+  }
+
+  res.status(200).json(blogData);
+};
+
 export const updateBlog = async (req, res, next) => {
   const _id = req.params.id;
 

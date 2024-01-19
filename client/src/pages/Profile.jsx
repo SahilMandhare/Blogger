@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { errorData, successData } from "../redux/user/userData";
+import ProfileBlog from "../components/ProfileBlog";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -136,6 +137,7 @@ const Profile = () => {
           {error && <p className="text-red-600">{error}</p>}
         </form>
       </div>
+      <ProfileBlog />
     </>
   );
 };
