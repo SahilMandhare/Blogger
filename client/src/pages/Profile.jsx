@@ -60,7 +60,7 @@ const Profile = () => {
 
       const data = await response.json();
 
-      dispatch(successData(data));
+      dispatch(successData(null));
       dispatch(errorData(null));
 
       navigate("/signin");
@@ -79,7 +79,13 @@ const Profile = () => {
 
       const data = await response.json();
 
-      dispatch(successData(data));
+      if (data.success === false) {
+        dispatch(successData(null));
+        dispatch(errorData(data.message));
+        return;
+      }
+
+      dispatch(successData(null));
       dispatch(errorData(null));
 
       navigate("/signin");

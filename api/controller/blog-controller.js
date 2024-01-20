@@ -58,3 +58,11 @@ export const updateBlog = async (req, res, next) => {
 
   res.status(200).json(newBlog)
 };
+
+export const deleteBlog = async (req, res, next) => {
+  const _id = req.params.id;
+
+  const newBlog = await Blog.findByIdAndDelete({ _id });
+
+  res.status(200).json(newBlog)
+};
