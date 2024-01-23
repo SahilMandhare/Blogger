@@ -14,7 +14,7 @@ const Home = () => {
   
   return (
     <>
-      <div className="h-[623px] flex flex-col items-center justify-center relative gap-8 opacity-100">
+      <div className="h-[89vh] flex flex-col items-center justify-center relative gap-8 opacity-100">
         <h1 className="text-3xl font-semibold">
           Publish your passions, your way
         </h1>

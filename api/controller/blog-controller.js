@@ -29,6 +29,28 @@ export const blog = async (req, res, next) => {
   res.status(200).json(blogData);
 };
 
+export const filterBlog = async (req, res, next) => {
+  const search = req.query.search || "";
+  const type =
+    req.query.type === "all" ||
+    req.query.type === "" ||
+    req.query.type === undefined
+      ? { $in: ["travel", "food", "lifestyle", "business", "adventure"] }
+      : req.query.type;
+
+  const blogData = await Blog.find({
+    title: { $regex: search, $options: "i" },
+    type,
+  });
+
+  if (!blogData) {
+    next(errorHandler(401, "Blog Not Found"));
+    return;
+  }
+
+  res.status(200).json(blogData);
+};
+
 export const userBlog = async (req, res, next) => {
   const userRef = req.params.id;
 
@@ -48,15 +70,17 @@ export const updateBlog = async (req, res, next) => {
   const newBlog = await Blog.findByIdAndUpdate(
     { _id },
     {
-      title: req.body.title,
-      type: req.body.type,
-      image: req.body.image,
-      description: req.body.description,
+      $set: {
+        title: req.body.title,
+        type: req.body.type,
+        image: req.body.image,
+        description: req.body.description,
+      },
     },
     { new: true }
   );
 
-  res.status(200).json(newBlog)
+  res.status(200).json(newBlog);
 };
 
 export const deleteBlog = async (req, res, next) => {
@@ -64,5 +88,5 @@ export const deleteBlog = async (req, res, next) => {
 
   const newBlog = await Blog.findByIdAndDelete({ _id });
 
-  res.status(200).json(newBlog)
+  res.status(200).json(newBlog);
 };
