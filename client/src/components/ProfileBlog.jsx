@@ -5,6 +5,7 @@ import ListingItem from "./ListingItem";
 
 const ProfileBlog = () => {
   const [blogs, setBlogs] = useState(null);
+  const [refresh, setRefresh] = useState(true);
 
   const currentUser = useSelector((state) => state.userData.currentUser);
 
@@ -14,6 +15,7 @@ const ProfileBlog = () => {
       const data = await response.json();
 
       setBlogs(data);
+      setRefresh(false)
     } catch (error) {
       console.log(error);
     }
@@ -22,23 +24,7 @@ const ProfileBlog = () => {
   useEffect(() => {
 
     blogData();
-  }, []);
-
-  const deleteHandler = async (e, blog) => {
-    try {
-      e.preventDefault()
-      const response = await fetch("/api/blogs/blog/delete/" + blog, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
-
-      blogData()
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  }, [refresh]);
 
   console.log(blogs)
 
@@ -47,7 +33,7 @@ const ProfileBlog = () => {
       <>
         <div className="max-md:px-6 md:px-[213px] w-full flex max-md:flex-col flex-wrap items-center justify-center">
           {blogs.map((blog) => {
-            return <ListingItem blog={blog} deleteHandler={deleteHandler}/>
+            return <ListingItem blog={blog} setRefresh={setRefresh}/>
           })}
         </div>
       </>

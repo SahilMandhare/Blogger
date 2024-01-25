@@ -10,6 +10,8 @@ const Search = () => {
 
   const [blogs, setBlogs] = useState(null);
 
+  const [refresh, setRefresh] = useState(true);
+
   const navigate = useNavigate();
 
   const filterData = async (newQuery) => {
@@ -38,27 +40,8 @@ const Search = () => {
     setQuery({ ...query, search, type });
 
     filterData(newQuery);
-  }, [location.search]);
-
-  const deleteHandler = async (e, blog) => {
-    try {
-      const params = new URLSearchParams(location.search);
-
-      const newQuery = params.toString();
-
-      e.preventDefault();
-      const response = await fetch("/api/blogs/blog/delete/" + blog, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      filterData(newQuery);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    setRefresh(false)
+  }, [location.search, refresh]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -78,7 +61,7 @@ const Search = () => {
 
   return (
     <div className="flex flex-col md:flex-row">
-      <div className="p-7  border-b-2 md:border-r-2 md:min-h-screen">
+      <div className="p-7 border-b-2 md:border-r-2 md:min-h-screen">
         <form onSubmit={handleSubmit} className="flex flex-col gap-8">
           <div className="flex items-center gap-2">
             <label className="whitespace-nowrap font-semibold">
@@ -118,33 +101,15 @@ const Search = () => {
         <h1 className="text-3xl font-semibold border-b p-3 text-orange-700 mt-5">
           Listing results:
         </h1>
-        <div className="p-7 flex flex-wrap items-center justify-center gap-4">
-          {/* {!loading && listings.length === 0 && (
-            <p className="text-xl text-slate-700">No listing found!</p>
-          )}
-          {loading && (
-            <p className="text-xl text-slate-700 text-center w-full">
-              Loading...
-            </p>
-          )} */}
-
+        <div className="p-7 flex flex-wrap max-md:items-center max-md:justify-center gap-4">
           {blogs &&
             blogs.map((blog) => (
               <ListingItem
                 key={blog._id}
                 blog={blog}
-                deleteHandler={deleteHandler}
+                setRefresh={setRefresh}
               />
             ))}
-
-          {/* {showMore && (
-            <button
-              onClick={onShowMoreClick}
-              className="text-green-700 hover:underline p-7 text-center w-full"
-            >
-              Show more
-            </button>
-          )} */}
         </div>
       </div>
     </div>

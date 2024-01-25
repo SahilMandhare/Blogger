@@ -21,18 +21,20 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/search" element={<Search />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/search" element={<Search />} />
+        </Route>
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
         </Route>
         <Route element={<PrivateRoute />}>
-          <Route path="/create-blog" element={<CreateBlog />} />  
+          <Route path="/create-blog" element={<CreateBlog />} />
         </Route>
         <Route element={<PrivateRoute />}>
-          <Route path="/update-blog/:id" element={<UpdateBlog />} />  
+          <Route path="/update-blog/:id" element={<UpdateBlog />} />
         </Route>
         <Route element={<PrivateRoute />}>
-          <Route path="/blog/:id" element={<Blog />} />  
+          <Route path="/blog/:id" element={<Blog />} />
         </Route>
       </Routes>
     </BrowserRouter>
