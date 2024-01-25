@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ListingItem from "../components/ListingItem";
 
 const Search = () => {
@@ -8,17 +8,57 @@ const Search = () => {
     type: "all",
   });
 
-  const navigate = useNavigate()
+  const [blogs, setBlogs] = useState(null);
+
+  const navigate = useNavigate();
+
+  const filterData = async (newQuery) => {
+    try {
+      const response = await fetch("/api/blogs/filter?" + newQuery);
+      const data = await response.json();
+
+      console.log(data);
+
+      if (data.success === false) {
+        return;
+      }
+      setBlogs(data);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const search = params.get("search");
-    const type = params.get("type");
+    const search = params.get("search") || "";
+    const type = params.get("type") || "all";
 
-    console.log(search);
+    const newQuery = params.toString();
 
     setQuery({ ...query, search, type });
+
+    filterData(newQuery);
   }, [location.search]);
+
+  const deleteHandler = async (e, blog) => {
+    try {
+      const params = new URLSearchParams(location.search);
+
+      const newQuery = params.toString();
+
+      e.preventDefault();
+      const response = await fetch("/api/blogs/blog/delete/" + blog, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      filterData(newQuery);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,15 +67,14 @@ const Search = () => {
     params.set("search", query.search);
     params.set("type", query.type);
 
-    const newQuery = params.toString()
+    const newQuery = params.toString();
 
-    navigate(`/search?${newQuery}`)
+    navigate(`/search?${newQuery}`);
   };
+
   const handleChange = (e) => {
     setQuery({ ...query, [e.target.id]: e.target.value });
   };
-
-  console.log(query);
 
   return (
     <div className="flex flex-col md:flex-row">
@@ -50,7 +89,7 @@ const Search = () => {
               id="search"
               placeholder="Search..."
               className="border rounded-lg p-3 w-full"
-              defaultValue={query.search}
+              value={query.search}
               onChange={handleChange}
             />
           </div>
@@ -58,7 +97,7 @@ const Search = () => {
             <label className="font-semibold">Sort:</label>
             <select
               onChange={handleChange}
-              defaultValue={query.type}
+              value={query.type}
               id="type"
               className="border rounded-lg p-3"
             >
@@ -70,16 +109,16 @@ const Search = () => {
               <option value="adventure">Adventure</option>
             </select>
           </div>
-          <button className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95">
+          <button className="bg-orange-700 text-white p-3 rounded-lg uppercase hover:opacity-95">
             Search
           </button>
         </form>
       </div>
       <div className="flex-1">
-        <h1 className="text-3xl font-semibold border-b p-3 text-slate-700 mt-5">
+        <h1 className="text-3xl font-semibold border-b p-3 text-orange-700 mt-5">
           Listing results:
         </h1>
-        <div className="p-7 flex flex-wrap gap-4">
+        <div className="p-7 flex flex-wrap items-center justify-center gap-4">
           {/* {!loading && listings.length === 0 && (
             <p className="text-xl text-slate-700">No listing found!</p>
           )}
@@ -89,11 +128,14 @@ const Search = () => {
             </p>
           )} */}
 
-          {/* {!loading &&
-            listings &&
-            listings.map((listing) => (
-              <ListingItem key={listing._id} listing={listing} />
-            ))} */}
+          {blogs &&
+            blogs.map((blog) => (
+              <ListingItem
+                key={blog._id}
+                blog={blog}
+                deleteHandler={deleteHandler}
+              />
+            ))}
 
           {/* {showMore && (
             <button

@@ -45,9 +45,9 @@ const ProfileBlog = () => {
   return (
     blogs && (
       <>
-        <div className="max-md:px-6 md:px-[213px] w-full flex max-md:flex-col flex-wrap">
+        <div className="max-md:px-6 md:px-[213px] w-full flex max-md:flex-col flex-wrap items-center justify-center">
           {blogs.map((blog) => {
-            return <ListingItem blog={blog} user={currentUser} deleteHandler={deleteHandler}/>
+            return <ListingItem blog={blog} deleteHandler={deleteHandler}/>
           })}
         </div>
       </>

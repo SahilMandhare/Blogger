@@ -33,14 +33,14 @@ export const userUpdate = async (req, res, next) => {
 };
 
 export const user = async (req, res, next) => {
-  if (req.params.id !== req.user.id) {
-    next(errorHandler(401, "UnAuthorized"));
-    return;
-  }
-
   const _id = req.params.id;
 
-  const userData = await User.findById({_id});
+  const userData = await User.findById({ _id });
+
+  if (!userData) {
+    next(errorHandler(401, "User Not Found"));
+    return;
+  }
 
   const { password: pass, ...remain } = userData._doc;
 

@@ -5,7 +5,7 @@ const route = express.Router()
 
 route.post("/blog/create/:id", createBlog)
 route.post("/blog/update/:id", updateBlog)
-route.post("/filter", filterBlog)
+route.get("/filter?", filterBlog)
 route.get("/blog/user/:id", userBlog)
 route.delete("/blog/delete/:id", deleteBlog)
 route.get("/blog/:id", blog)

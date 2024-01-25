@@ -11,8 +11,8 @@ const Header = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    setSearch(params.get("search") || search);
-  }, []);
+    setSearch(params.get("search") || "");
+  }, [location.search]);
 
   const inputHandler = (e) => {
     setSearch(e.target.value || "");
@@ -21,7 +21,14 @@ const Header = () => {
   const submitHandler = (e) => {
     e.preventDefault();
 
-    navigate(`/search?search=${search}`);
+    const params = new URLSearchParams(location.search);
+    params.set("search", search)
+
+    console.log(params.get("search"))
+
+    const newQuery = params.toString()
+    
+    navigate(`/search?${newQuery}`);
   };
 
   return (
